@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--
+    应用主题：不继承任何系统主题（避免依赖具体平台版本），
+    只设置窗口背景。状态栏 / 导航栏颜色在 MainActivity 里用代码设置。
+  -->
+  <style name="AppTheme">
+    <item name="android:windowBackground">@color/app_bg</item>
+  </style>
+</resources>

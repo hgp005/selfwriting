@@ -1,0 +1,101 @@
+// ============================================================================
+//  selfwriting · Gradle 版安卓工程（标准 Android Studio 结构）
+//  与 android/build.bat 的手动构建链共用同一份源码与资源：
+//    ../android/src            应用 Java 源码
+//    ../android/res            资源
+//    ../android/AndroidManifest.xml
+//  构建前会调用 ../android/pkgassets.bat 把网页资源收进 assets/www
+// ============================================================================
+plugins {
+    id 'com.android.application' version '8.5.2'
+}
+
+def projectRoot = rootProject.projectDir.parentFile          // 仓库根目录
+def androidDir  = new File(projectRoot, 'android')
+
+// 网页资源先在 build/pkgwww/www 收拢，再整体作为 assets 源目录。
+// 必须是「包含 www 这一层的父目录」：若直接指向 www，AGP 会把里面的
+// 内容拍平到 assets/ 根下，应用就找不到 www/index.html 了。
+def webRoot = new File(rootProject.buildDir, 'pkgwww')
+def webWww  = new File(webRoot, 'www')
+
+// 签名配置：优先使用已有的 keystore，没有则退回 debug 签名
+def ks = new File(androidDir, 'keystore/selfwriting.jks')
+def hasReleaseKey = ks.exists()
+
+android {
+    namespace 'com.selfwriting.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.selfwriting.app'
+        minSdk 24
+        targetSdk 34
+        versionCode 10
+        versionName '1.15.0'
+    }
+
+    sourceSets {
+        main {
+            // 源码与资源由 setup.ps1 复制到标准目录；这里显式声明以防遗漏
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = [webRoot]
+        }
+    }
+
+    signingConfigs {
+        if (hasReleaseKey) {
+            release {
+                storeFile ks
+                storePassword 'selfwriting'
+                keyAlias 'selfwriting'
+                keyPassword 'selfwriting'
+                v1SigningEnabled false
+                v2SigningEnabled true
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            if (hasReleaseKey) signingConfig signingConfigs.release
+        }
+        debug {
+            if (hasReleaseKey) signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packaging {
+        resources.excludes += ['META-INF/*.kotlin_module']
+    }
+
+    // 关掉不必要的分析任务，加快构建
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+// ---- 构建前把网页资源收进 assets/www（并统一反斜杠） ----
+tasks.register('packageWebAssets', Exec) {
+    workingDir androidDir
+    commandLine 'cmd', '/c', new File(androidDir, 'pkgassets.bat').absolutePath,
+            projectRoot.absolutePath, webWww.absolutePath
+    doFirst {
+        if (webWww.exists()) { delete webWww }
+        webRoot.mkdirs()
+        logger.lifecycle("打包网页资源 -> ${webWww}")
+    }
+}
+
+tasks.matching { it.name.startsWith('preBuild') || it.name == 'mergeDebugAssets' || it.name == 'mergeReleaseAssets' }
+        .configureEach { dependsOn 'packageWebAssets' }

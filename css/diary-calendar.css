@@ -1,0 +1,321 @@
+/* ==========================================================================
+   selfwriting · css/diary-calendar.css
+   日记日历（农历 / 节气 / 节假日底色 / 圆形日期 / 数量角标 / 收藏 / 多选区间）
+   的样式。单独一个文件，避免和主样式表互相覆盖。
+
+   底色规则（和 lunar.js 的 rest / work 一一对应）：
+     .cal-day.work     工作日（含调休上班的周末）→ 黄
+     .cal-day.rest     休息日（周末 / 法定假日）  → 绿
+     .cal-day.holiday  法定假日                   → 绿（更实一点）
+     .cal-day.swap     调休上班的周末              → 按工作日走（黄）
+     .cal-day.today    今天：单独的圆环
+     .cal-day.sel      当前选中的那一天：实心强调色（和今天、和多选范围都不一样）
+     .cal-day.inrange  多选范围内：淡强调底 + 描边
+   ========================================================================== */
+
+:root {
+  --cal-work: #f7e6a2;          /* 工作日：黄 */
+  --cal-work-ink: #6b5200;
+  --cal-work-line: #e0c766;
+  --cal-rest: #c3e7cb;          /* 休息日：绿 */
+  --cal-rest-ink: #1d6543;
+  --cal-rest-line: #96cfa9;
+  --cal-size: 31px;             /* 圆形日期直径 */
+}
+
+html[data-theme="dark"] {
+  --cal-work: #4a4020;
+  --cal-work-ink: #f0e0a8;
+  --cal-work-line: #5f5228;
+  --cal-rest: #1e3a2a;
+  --cal-rest-ink: #a7e2c0;
+  --cal-rest-line: #2c5340;
+}
+
+html[data-warm="1"] {
+  --cal-work: #f4e29c;
+  --cal-work-ink: #6a5100;
+  --cal-rest: #cae6c6;
+  --cal-rest-ink: #1d6543;
+}
+html[data-warm="1"][data-theme="dark"] {
+  --cal-work: #453c1c;
+  --cal-rest: #1c3526;
+}
+
+/* ------------------------------------------------------------------ */
+/* 1. 实时时钟（时区可选，默认北京时间）                                */
+/* ------------------------------------------------------------------ */
+.cal-clock {
+  display: flex; align-items: center; gap: 6px;
+  margin: 0 0 8px; padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-size: 12px; color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+.cal-clock .ico { width: 14px; height: 14px; flex: 0 0 auto; color: var(--accent); }
+.cal-clock .cal-clock-tz { font-weight: 620; color: var(--accent); white-space: nowrap; }
+.cal-clock .cal-clock-time { font-weight: 700; color: var(--text); letter-spacing: .2px; }
+.cal-clock .cal-clock-wd { color: var(--text-3); }
+.cal-clock .cal-clock-sep { color: var(--line-strong); }
+
+/* ------------------------------------------------------------------ */
+/* 2. 圆形日期格 + 数量角标 + 农历小字                                  */
+/* ------------------------------------------------------------------ */
+.cal-grid .cal-cell.cal-day {
+  position: relative;
+  aspect-ratio: auto;
+  min-height: calc(var(--cal-size) + 18px);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 1px; padding: 3px 0 4px;
+  border: 0; border-radius: 12px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 13.5px; font-weight: 560;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  user-select: none; -webkit-user-select: none;
+  transition: background .12s ease;
+}
+.cal-grid .cal-cell.cal-day:active .num { transform: scale(.94); }
+
+.cal-grid .cal-cell.cal-day .num {
+  width: var(--cal-size); height: var(--cal-size);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 13.5px; font-weight: 640;
+  font-variant-numeric: tabular-nums;
+  transition: background .12s ease, box-shadow .12s ease, transform .12s ease, color .12s ease;
+}
+
+/* 底色规则 */
+.cal-grid .cal-cell.cal-day.work .num { background: var(--cal-work); color: var(--cal-work-ink); box-shadow: inset 0 0 0 1px var(--cal-work-line); }
+.cal-grid .cal-cell.cal-day.rest .num { background: var(--cal-rest); color: var(--cal-rest-ink); box-shadow: inset 0 0 0 1px var(--cal-rest-line); }
+.cal-grid .cal-cell.cal-day.holiday .num { background: var(--cal-rest); color: var(--cal-rest-ink); box-shadow: inset 0 0 0 2px var(--cal-rest-line); }
+.cal-grid .cal-cell.cal-day.swap .num { background: var(--cal-work); color: var(--cal-work-ink); box-shadow: inset 0 0 0 1px var(--cal-work-line); }
+.cal-grid .cal-cell.cal-day.festival .num { box-shadow: inset 0 0 0 1.5px var(--accent); }
+
+/* 还没到的日子 / 不是本月的日子 */
+.cal-grid .cal-cell.cal-day.out { opacity: .34; }
+.cal-grid .cal-cell.cal-day.future { opacity: .34; pointer-events: none; }
+.cal-grid .cal-cell.cal-day.future .num { background: var(--surface-2); color: var(--text-3); box-shadow: none; }
+
+/* 今天：单独的圆环 */
+.cal-grid .cal-cell.cal-day.today { color: var(--accent); font-weight: 700; }
+.cal-grid .cal-cell.cal-day.today .num { box-shadow: 0 0 0 2px var(--accent); }
+
+/* 选中的那一天：实心强调色 */
+.cal-grid .cal-cell.cal-day.sel .num {
+  background: var(--accent); color: var(--accent-text);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+/* 多选范围：整格淡强调底 + 实心描边，和「今天」「选中」都不撞 */
+.cal-grid .cal-cell.cal-day.inrange { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal-grid .cal-cell.cal-day.inrange .num {
+  box-shadow: 0 0 0 2px var(--accent), inset 0 0 0 1px var(--bg-elev);
+  font-weight: 700;
+}
+
+/* 当天记录数量：角标 */
+.cal-grid .cal-cell.cal-day .cnt {
+  position: absolute; top: 1px; right: 3px;
+  min-width: 14px; height: 14px; padding: 0 3px;
+  border-radius: 999px;
+  background: var(--accent); color: var(--accent-text);
+  font-size: 9.5px; line-height: 14px; font-weight: 700;
+  text-align: center; font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 1.5px var(--bg-elev);
+}
+
+/* 收藏的小红心 */
+.cal-grid .cal-cell.cal-day .fav {
+  position: absolute; top: 0; left: 3px;
+  color: var(--danger); font-size: 10px; line-height: 1.1;
+}
+
+/* 数字下面的农历 / 节气 / 节日小字 */
+.cal-grid .cal-cell.cal-day .lunar {
+  max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-size: 9px; line-height: 1.2; font-weight: 500;
+  color: var(--text-3);
+}
+.cal-grid .cal-cell.cal-day.rest .lunar,
+.cal-grid .cal-cell.cal-day.holiday .lunar { color: var(--cal-rest-ink); }
+.cal-grid .cal-cell.cal-day.swap .lunar { color: var(--danger); font-weight: 700; }
+
+/* 长按按住时：给一个明确的「按住了」反馈，松手就弹「选这几天」面板 */
+.cal-grid .cal-cell.cal-day.armed { background: var(--accent-soft); }
+.cal-grid .cal-cell.cal-day.armed .num {
+  transform: scale(.9);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+/* 图例 */
+.cal-legend {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px;
+  margin-top: 10px; font-size: 11px; color: var(--text-3);
+}
+.cal-legend .lg { display: inline-flex; align-items: center; gap: 5px; }
+.cal-legend .sw {
+  width: 11px; height: 11px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 8px; line-height: 1;
+}
+.cal-legend .sw.work { background: var(--cal-work); box-shadow: inset 0 0 0 1px var(--cal-work-line); }
+.cal-legend .sw.rest { background: var(--cal-rest); box-shadow: inset 0 0 0 1px var(--cal-rest-line); }
+.cal-legend .sw.swap { background: var(--cal-work); box-shadow: inset 0 0 0 1px var(--danger); }
+.cal-legend .sw.today { background: var(--surface-2); box-shadow: 0 0 0 2px var(--accent); }
+.cal-legend .sw.sel { background: var(--accent); }
+.cal-legend .sw.fav { color: var(--danger); font-size: 11px; }
+
+/* ------------------------------------------------------------------ */
+/* 3. 已选区间提示（真正的调整在「选这几天」面板里）                     */
+/* ------------------------------------------------------------------ */
+.cal-selbar {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 10px; padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+}
+.cal-selbar.hidden { display: none !important; }
+.cal-sel-info { display: flex; align-items: center; gap: 7px; flex: 1 1 auto; min-width: 0; }
+.cal-sel-info .ico { width: 16px; height: 16px; color: var(--accent); flex: 0 0 auto; }
+.cal-sel-title { font-size: 12.5px; font-weight: 660; }
+.cal-sel-sub { font-size: 10.5px; color: var(--text-3); margin-top: 1px; }
+.cal-selbar .chip { flex: 0 0 auto; }
+
+/* ------------------------------------------------------------------ */
+/* 3b. 「选这几天」面板（长按日期后弹出：滑动 / 点选一段日子）           */
+/* ------------------------------------------------------------------ */
+.rp-head { text-align: center; margin: 2px 0 10px; }
+.rp-range { font-size: 17px; font-weight: 700; letter-spacing: .2px; font-variant-numeric: tabular-nums; }
+.rp-range-sub { font-size: 11.5px; color: var(--text-3); margin-top: 4px; }
+
+.rp-ctrl { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.rp-ctrl .rp-step { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; }
+.rp-ctrl .rp-step .ico { width: 14px; height: 14px; }
+.rp-ctrl-mid { flex: 1 1 auto; min-width: 0; text-align: center; }
+.rp-ctrl-main { font-size: 13px; font-weight: 650; }
+.rp-ctrl-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+.rp-strip {
+  display: flex; gap: 6px; align-items: stretch;
+  overflow-x: auto; padding: 6px 2px 8px;
+  scrollbar-width: none;
+  /* 纵向手势还给页面，横向留给「按住滑动选日期」 */
+  touch-action: pan-y;
+}
+.rp-strip::-webkit-scrollbar { display: none; }
+.rp-day {
+  flex: 0 0 auto; width: 44px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 4px 0 5px; border-radius: 12px;
+  background: transparent; border: 1px solid var(--line);
+  color: var(--text-2); font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: pan-y;
+  user-select: none; -webkit-user-select: none;
+}
+.rp-day .rp-num {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: var(--surface-2); color: var(--text);
+  font-size: 13px; font-weight: 640; font-variant-numeric: tabular-nums;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.rp-day .rp-sub {
+  max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-size: 8.5px; line-height: 1.1; color: var(--text-3);
+}
+.rp-day.work .rp-num { background: var(--cal-work); color: var(--cal-work-ink); }
+.rp-day.rest .rp-num { background: var(--cal-rest); color: var(--cal-rest-ink); }
+.rp-day.swap .rp-sub { color: var(--danger); font-weight: 700; }
+.rp-day.today { border-color: var(--accent); }
+.rp-day.today .rp-num { box-shadow: 0 0 0 2px var(--accent); }
+.rp-day.in {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+}
+.rp-day.in .rp-num { box-shadow: 0 0 0 2px var(--accent); font-weight: 700; }
+.rp-day.first, .rp-day.last { background: var(--accent-soft); }
+.rp-day.future { opacity: .3; pointer-events: none; }
+
+/* ------------------------------------------------------------------ */
+/* 4. 当日面板：多人创作入口 / 收藏 / 大按钮                            */
+/* ------------------------------------------------------------------ */
+.day-sub {
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 11.5px; color: var(--text-3);
+  margin: 0 0 10px;
+}
+.day-tools {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.day-tools .field-note { margin: 0; }
+.day-tools .multi-entry { flex: 0 0 auto; }
+.day-tools .multi-entry .ico { width: 15px; height: 15px; }
+.day-tools .badge.multi { flex: 0 1 auto; overflow: hidden; }
+.fav-toggle {
+  margin-left: auto; flex: 0 0 auto;
+  border: 1px solid var(--line); background: var(--bg-elev);
+}
+.fav-toggle.on {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+}
+
+/* 大按钮：写这一天的日记 */
+.day-cta {
+  display: flex; flex-direction: column; gap: 10px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 12px;
+}
+.day-cta-head { display: flex; align-items: flex-start; gap: 8px; }
+.day-cta-head .ico { width: 16px; height: 16px; color: var(--accent); margin-top: 2px; flex: 0 0 auto; }
+.day-cta-title { font-size: 14.5px; font-weight: 680; }
+.day-cta-sub { font-size: 11.5px; color: var(--text-3); margin-top: 3px; line-height: 1.5; }
+.day-cta-btn { font-size: 15px; padding: 12px; }
+.day-cta-btn .ico { width: 17px; height: 17px; }
+
+/* ------------------------------------------------------------------ */
+/* 5. 收藏的日子 / 跨天日记角标 / 区间日期行                            */
+/* ------------------------------------------------------------------ */
+.fav-card { margin-top: 12px; }
+.fav-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.fav-day {
+  display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+  padding: 8px 10px; border-radius: var(--radius-sm);
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.fav-day:active { transform: scale(.99); }
+.fav-heart { color: var(--danger); flex: 0 0 auto; }
+.fav-date { font-size: 12.5px; font-weight: 640; flex: 0 0 auto; }
+.fav-sub {
+  font-size: 11px; color: var(--text-3); flex: 1 1 auto; min-width: 0;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: right;
+}
+
+.badge.range {
+  background: color-mix(in srgb, var(--info) 14%, transparent);
+  color: var(--info);
+  white-space: nowrap;
+}
+.range-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px; color: var(--text-2);
+  padding: 9px 10px; border-radius: var(--radius-sm);
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.range-row .ico { width: 15px; height: 15px; color: var(--info); }
+
+/* 记录本卡片下面的「跨天日记」小字 */
+.field-note.range-line { margin: -6px 2px 8px; }

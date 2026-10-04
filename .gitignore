@@ -1,0 +1,34 @@
+# 运行期生成
+.server-info.json
+build/
+dist/
+shots/*.log
+
+# 词条工具生成物（可用 node tools/i18n-scan.js、tools/i18n-batches.js 重新生成；
+# tools/i18n-frag-*.json 是翻译源文件，要保留）
+tools/.i18n-scan.json
+tools/i18n-batches/
+
+# 构建工具（体积大，可用 tools/android/get-tools.bat 重新取回）
+tools/android/jdk17/
+tools/android/*.jar
+tools/android/aapt2/
+tools/android/*.zip
+
+# 安卓构建产物
+android-gradle/.gradle/
+android-gradle/local.properties
+android-gradle/app/build/
+android-gradle/app/src/main/assets/
+android-gradle/app/src/main/java/
+android-gradle/app/src/main/res/
+android-gradle/app/src/main/AndroidManifest.xml
+android/keystore/
+
+# 依赖与临时
+node_modules/
+*.tmp
+tools/.gh-token
+tools/git-portable/
+tools/git-portable.zip
+github-upload/

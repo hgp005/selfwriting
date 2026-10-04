@@ -1,0 +1,23 @@
+// 顶层构建文件：只声明插件仓库与依赖仓库（国内镜像优先，失败自动回落到官方源）
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'selfwriting'
+include ':app'

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- selfwriting 图标：一支斜置的钢笔，笔尖落在纸面的书写线上（与 assets/icon.svg 同一造型） -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+  <!-- 纸上的书写线（28/512 等比换算 ≈ 5.9） -->
+  <path
+      android:fillColor="#00000000"
+      android:strokeColor="#B4503C"
+      android:strokeWidth="5.9"
+      android:strokeLineCap="round"
+      android:pathData="M25.3,85.2 L82.7,85.2" />
+
+  <!-- 笔杆（46/512 ≈ 9.7） -->
+  <path
+      android:fillColor="#00000000"
+      android:strokeColor="#B4503C"
+      android:strokeWidth="9.7"
+      android:strokeLineCap="round"
+      android:pathData="M75.1,26.2 L92.4,43.5" />
+
+  <!-- 笔握（38/512 ≈ 8.0） -->
+  <path
+      android:fillColor="#00000000"
+      android:strokeColor="#B4503C"
+      android:strokeWidth="8.0"
+      android:strokeLineCap="round"
+      android:pathData="M77.2,41.3 L63.3,63.3" />
+
+  <!-- 笔尖 -->
+  <path
+      android:fillColor="#B4503C"
+      android:pathData="M60.3,67.9 L54,80.5 L71.7,73.4 Z" />
+</vector>

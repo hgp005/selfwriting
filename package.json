@@ -1,0 +1,19 @@
+{
+  "name": "selfwriting",
+  "version": "1.15.0",
+  "private": true,
+  "description": "selfwriting · 安卓离线创作应用（小说 / 文章 / 日记 / 大纲 / 阅读器 / 游戏 / 音乐 / 计算器 / 隐私锁 / 成就 / 统计）",
+  "scripts": {
+    "start": "node server.js 8099",
+    "serve": "node server.js 8099",
+    "verify": "node tools/verify.js 8099",
+    "verify:dark": "node tools/verify.js 8099 dark",
+    "verify:apk": "node tools/verify-apk.js dist/selfwriting-1.15.0.apk",
+    "bench": "node tools/bench.js 200000 30",
+    "perf": "node tools/perf-import.js 1024",
+    "apk": "android\\build.bat",
+    "apk:gradle": "android-gradle\\build-gradle.bat"
+  },
+  "keywords": ["writing", "novel", "diary", "outline", "offline", "pwa", "android"],
+  "license": "MIT"
+}

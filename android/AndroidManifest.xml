@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Package name comes from this attribute.
+  Gradle also sets namespace/applicationId in app/build.gradle and prints a
+  harmless note that the package attribute here is ignored during merging.
+  Keep this comment ASCII-only and free of double hyphens.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.selfwriting.app"
+    android:versionCode="10"
+    android:versionName="1.15.0">
+
+  <!-- INTERNET is only used to reach the bundled loopback server; the app itself is offline. -->
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
+  <application
+      android:label="selfwriting"
+      android:icon="@mipmap/ic_launcher"
+      android:allowBackup="true"
+      android:hardwareAccelerated="true"
+      android:largeHeap="true"
+      android:usesCleartextTraffic="true"
+      android:supportsRtl="false">
+    <!-- 启动器图标用位图：3D 立体质感无法用 VectorDrawable 还原，
+         已按 mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi 五档放进 res/mipmap-*/ic_launcher.png -->
+
+    <activity
+        android:name=".MainActivity"
+        android:exported="true"
+        android:label="selfwriting"
+        android:launchMode="singleTask"
+        android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|uiMode|density|fontScale"
+        android:windowSoftInputMode="adjustResize"
+        android:theme="@style/AppTheme">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

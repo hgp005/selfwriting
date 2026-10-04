@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#f6f6f4" />
+<meta name="description" content="selfwriting · 离线创作：小说 / 文章 / 日记 / 大纲 / 阅读器 / 成就 / 统计" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="selfwriting" />
+<title>selfwriting · 离线创作</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="assets/icon-192.png" type="image/png" />
+<link rel="apple-touch-icon" href="assets/icon-192.png" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/music2.css" />
+<link rel="stylesheet" href="css/diary-calendar.css" />
+<link rel="stylesheet" href="css/reader2.css" />
+</head>
+<body>
+<!-- 全局亮度 / 护眼遮罩（叠在最上层，不拦截操作） -->
+<div id="brightnessOverlay" class="brightness-overlay" aria-hidden="true"></div>
+
+<div id="app">
+  <!-- 顶部栏 -->
+  <header id="appbar" class="appbar">
+    <div class="appbar-row">
+      <button id="navBack" class="icon-btn hidden" aria-label="返回" data-icon="back"></button>
+      <h1 id="viewTitle">书架</h1>
+      <button id="navMe" class="icon-btn me-btn" aria-label="我的账号与状态"><span id="navMeFace"></span><i id="navMeDot" class="me-dot hidden"></i></button>
+      <button id="navSearch" class="icon-btn" aria-label="搜索" data-icon="search"></button>
+      <button id="navStats" class="icon-btn" aria-label="统计与成就" data-icon="chart"></button>
+      <button id="navFun" class="icon-btn" aria-label="更多功能" data-icon="grid"></button>
+      <button id="navBrightness" class="icon-btn" aria-label="亮度" data-icon="sun"></button>
+    </div>
+    <div id="appbarMeta" class="appbar-row appbar-meta">
+      <div id="viewSub" class="appbar-sub"></div>
+      <button id="todayChip" class="today-chip" aria-label="今日创作情况">
+        <span id="todayWords">今日 0 字</span>
+        <span id="todayProgress" class="today-bar"><i></i></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主视图区 -->
+  <main id="view" class="view" tabindex="-1"></main>
+
+  <!-- 底部导航：只放创作模块，工具与娱乐收进顶部栏的「更多」 -->
+  <nav id="tabbar" class="tabbar">
+    <button class="tab" data-tab="novel" data-icon="feather">小说</button>
+    <button class="tab" data-tab="article" data-icon="doc">文章</button>
+    <button class="tab" data-tab="diary" data-icon="calendar">日记</button>
+    <button class="tab" data-tab="outline" data-icon="tree">大纲</button>
+    <button class="tab" data-tab="reader" data-icon="reader">阅读</button>
+  </nav>
+</div>
+
+<!-- 弹层 -->
+<div id="sheetHost" class="sheet-host hidden" aria-hidden="true">
+  <div class="sheet-backdrop" data-close="1"></div>
+  <section class="sheet" role="dialog" aria-modal="true">
+    <div class="sheet-grabber"></div>
+    <header class="sheet-head">
+      <h2 id="sheetTitle">标题</h2>
+      <button class="icon-btn" data-close="1" aria-label="关闭" data-icon="close"></button>
+    </header>
+    <div id="sheetBody" class="sheet-body"></div>
+    <footer id="sheetFoot" class="sheet-foot"></footer>
+  </section>
+</div>
+
+<div id="modalHost" class="modal-host hidden" aria-hidden="true">
+  <div class="modal-backdrop" data-close="1"></div>
+  <div class="modal" role="dialog" aria-modal="true">
+    <h2 id="modalTitle">提示</h2>
+    <div id="modalBody" class="modal-body"></div>
+    <div id="modalFoot" class="modal-foot"></div>
+  </div>
+</div>
+
+<div id="brightnessPanel" class="bright-panel hidden" aria-hidden="true">
+  <div class="bright-row">
+    <span class="bright-ico" data-icon="sun-small"></span>
+    <input id="brightnessRange" type="range" min="20" max="100" step="1" value="100" aria-label="亮度" />
+    <span class="bright-ico bright-ico-lg" data-icon="sun"></span>
+  </div>
+  <div class="bright-actions">
+    <button id="brightThemeToggle" class="chip">深色模式</button>
+    <button id="brightWarm" class="chip">护眼</button>
+    <button id="brightAuto" class="chip">跟随系统</button>
+  </div>
+</div>
+
+<div id="toastHost" class="toast-host" aria-live="polite"></div>
+
+<!-- 脚本：按依赖顺序加载（无构建、无联网） -->
+<script src="js/util.js"></script>
+<script src="js/taxonomy.js"></script>
+<script src="js/parsers.js"></script>
+<script src="js/i18n-extra.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/db.js"></script>
+<script src="js/store.js"></script>
+<script src="js/achievements.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/io.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/view-library.js"></script>
+<script src="js/view-editor.js"></script>
+<script src="js/view-outline.js"></script>
+<script src="js/lunar.js"></script>
+<script src="js/view-diary.js"></script>
+<script src="js/view-reader.js"></script>
+<script src="js/view-stats.js"></script>
+<script src="js/privacy.js"></script>
+<script src="js/collab.js"></script>
+<script src="js/continue.js"></script>
+<script src="js/view-calc.js"></script>
+<script src="js/view-games.js"></script>
+<script src="js/tunes.js"></script>
+<script src="js/view-music.js"></script>
+<script src="js/view-notes.js"></script>
+<script src="js/view-tools.js"></script>
+<script src="js/view-collab.js"></script>
+<script src="js/view-profile.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

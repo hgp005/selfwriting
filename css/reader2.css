@@ -1,0 +1,391 @@
+/* ==========================================================================
+   selfwriting · css/reader2.css
+   阅读器 v2：书架视图（单/双列、封面宽度、收藏爱心）、点击落下的工具栏、
+   三种翻页方式、书签点亮与目录/侧边进度条上的书签标记。
+   单独一个文件，避免和主样式表互相覆盖。
+   ========================================================================== */
+
+:root {
+  --rv-mark: #e0556b;            /* 书签丝带 / 爱心的颜色 */
+  --rv-cover-w: 108px;           /* 封面宽度（书架容器上会被设置成实际值） */
+  --rv-appbar-h: 56px;
+  --rv-tabbar-h: 58px;
+  --rv-bottombar-h: 62px;
+}
+
+/* ------------------------------------------------------------------ */
+/* 1. 书架：视图切换 / 封面宽度 / 收藏筛选                             */
+/* ------------------------------------------------------------------ */
+.rv-shelf-bar { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.rv-bar-row { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.rv-bar-gap { flex: 1 1 auto; }
+.rv-bar-label { font-size: 12px; color: var(--text-3); flex: 0 0 auto; }
+
+.rv-seg {
+  display: inline-flex; flex: 0 0 auto;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--surface-2); padding: 2px; gap: 2px;
+}
+.rv-seg-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 0; background: none; color: var(--text-2);
+  font-size: 12px; font-family: inherit; line-height: 1;
+  padding: 6px 11px; border-radius: 999px;
+  transition: background .15s ease, color .15s ease;
+}
+.rv-seg-btn .ico { width: 14px; height: 14px; }
+.rv-seg-btn.on { background: var(--bg-elev); color: var(--accent); font-weight: 620; box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
+
+.rv-filter { flex: 0 0 auto; gap: 6px; }
+.rv-filter .chip { display: inline-flex; align-items: center; gap: 5px; }
+.rv-filter .chip .ico { width: 13px; height: 13px; }
+.rv-chip-n {
+  font-size: 10.5px; font-variant-numeric: tabular-nums;
+  padding: 0 5px; border-radius: 999px; background: var(--surface-2); color: var(--text-3);
+}
+
+.rv-range { flex: 1 1 auto; min-width: 60px; accent-color: var(--accent); }
+.rv-range-val {
+  flex: 0 0 auto; font-size: 11.5px; color: var(--text-3);
+  font-variant-numeric: tabular-nums; min-width: 40px; text-align: right;
+}
+
+.rv-shelf-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* ------------------------------------------------------------------ */
+/* 2. 封面（没有图片时用书名生成的渐变封面，纯 CSS/SVG，不联网）        */
+/* ------------------------------------------------------------------ */
+.rv-cover {
+  position: relative; flex: 0 0 auto;
+  width: var(--rv-cover-w, 108px);
+  max-width: 100%;
+  aspect-ratio: 3 / 4;
+  min-height: calc(var(--rv-cover-w, 108px) * 1.333);   /* 老浏览器没有 aspect-ratio 时的兜底 */
+  border-radius: 7px; overflow: hidden;
+  background: var(--surface-2);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, .18);
+  color: #fff;
+}
+@supports (aspect-ratio: 3 / 4) { .rv-cover { min-height: 0; } }
+.rv-cover-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rv-cover-gen { display: flex; flex-direction: column; justify-content: flex-end; padding: 9px 8px 8px 14px; }
+.rv-cover-spine {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .30), rgba(0, 0, 0, 0));
+}
+.rv-cover-text {
+  font-family: var(--font-serif, serif);
+  font-size: 13px; font-weight: 650; line-height: 1.3;
+  word-break: break-word; overflow: hidden;
+  max-height: 5.2em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .28);
+}
+.rv-cover-tag { font-size: 10px; opacity: .82; margin-top: 5px; }
+
+.rv-cover-wrap { position: relative; display: flex; justify-content: center; }
+
+/* ------------------------------------------------------------------ */
+/* 3. 书架卡片：单列 / 双列                                             */
+/* ------------------------------------------------------------------ */
+.rv-card { display: block; }
+.rv-card-main { display: flex; align-items: flex-start; gap: 12px; }
+.rv-card-info { flex: 1 1 auto; min-width: 0; }
+.rv-title-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.rv-title-row .card-title { margin: 0; }
+.rv-title { flex: 1 1 auto; min-width: 0; }
+.rv-read-line {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--text-3); margin-top: 5px;
+}
+
+.rv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.rv-grid-card {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  padding: 10px 8px 12px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg-elev);
+  transition: transform .12s ease;
+}
+.rv-grid-card:active { transform: scale(.97); }
+.rv-grid-card .bar { width: 100%; }
+.rv-grid-title {
+  font-size: 12.5px; font-weight: 620; line-height: 1.35; text-align: center;
+  max-height: 2.7em; overflow: hidden; word-break: break-word;
+}
+.rv-grid-sub { display: flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--text-3); }
+.rv-grid-pct { font-size: 10.5px; color: var(--text-3); }
+
+/* ------------------------------------------------------------------ */
+/* 4. 收藏爱心                                                         */
+/* ------------------------------------------------------------------ */
+.rv-like {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 0; background: none; padding: 0; color: var(--text-3);
+  font-family: inherit; cursor: pointer;
+  transition: color .15s ease, transform .12s ease;
+}
+.rv-like:active { transform: scale(.88); }
+.rv-like.on { color: var(--rv-mark); }
+.rv-like-sm { width: 30px; height: 30px; border-radius: 50%; flex: 0 0 auto; }
+.rv-like-sm .ico { width: 19px; height: 19px; }
+.rv-like-cover {
+  position: absolute; right: -4px; top: -6px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: color-mix(in srgb, var(--bg-elev) 88%, transparent);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .22);
+}
+.rv-like-cover .ico { width: 17px; height: 17px; }
+.rv-like-wide {
+  padding: 7px 13px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg-elev);
+  font-size: 12.5px;
+}
+.rv-like-wide.on { border-color: color-mix(in srgb, var(--rv-mark) 45%, transparent); color: var(--rv-mark); }
+.rv-like-wide .ico { width: 16px; height: 16px; }
+.rv-like-label { line-height: 1; }
+
+/* 书本菜单 / 阅读操作里的头部 */
+.rv-menu-head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+.rv-menu-info { flex: 1 1 auto; min-width: 0; }
+.rv-menu-title { font-size: 15px; font-weight: 650; line-height: 1.3; word-break: break-word; }
+.rv-menu-sub { font-size: 11.5px; color: var(--text-3); margin-top: 4px; }
+
+/* ------------------------------------------------------------------ */
+/* 5. 点击落下的工具栏（专注阅读）                                     */
+/* ------------------------------------------------------------------ */
+.appbar, .tabbar, .reader-topbar { transition: transform .26s ease, opacity .2s ease; }
+.view { transition: margin .26s ease; }
+html.rv-chrome-off .appbar { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+html.rv-chrome-off .tabbar { transform: translateY(100%); opacity: 0; pointer-events: none; }
+html.rv-chrome-off .reader-topbar { transform: translateY(150%); opacity: 0; pointer-events: none; }
+html.rv-chrome-off .view {
+  margin-top: calc(-1 * var(--rv-appbar-h, 56px));
+  margin-bottom: calc(-1 * var(--rv-tabbar-h, 58px));
+}
+/* 专注模式下没有上下工具栏，进度条把这段空间也利用起来 */
+html.rv-chrome-off .rv-rail { top: 14px; bottom: 14px; }
+
+/* 底部阅读条 */
+.rv-bottombar { padding: 8px 8px 8px 4px; gap: 2px; }
+.rv-bb-main { flex: 1 1 auto; min-width: 0; }
+.rv-bb-line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.rv-bb-line + .rv-bb-line { margin-top: 5px; }
+.rv-bottombar .bar { flex: 1 1 auto; width: auto; min-width: 40px; }
+.rv-chapter {
+  flex: 0 1 auto; min-width: 0; color: var(--text-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.rv-pct { flex: 0 0 auto; font-variant-numeric: tabular-nums; font-weight: 620; color: var(--text-2); }
+.rv-mode-tag {
+  flex: 0 0 auto; border: 1px solid var(--line); background: var(--surface-2);
+  color: var(--text-3); font-family: inherit; font-size: 10.5px; line-height: 1;
+  padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+}
+.rv-mode-tag:active { background: var(--surface-2); transform: scale(.95); }
+.rv-appbar-actions { display: flex; align-items: center; gap: 2px; }
+
+/* 书签按钮点亮（实心） */
+.rv-mark-btn.on { color: var(--rv-mark); }
+.rv-mark-btn.on .ico path { fill: currentColor; }
+
+/* 整页翻页 / 滑动翻页：横向手势留给应用（分页模式不需要纵向滚动） */
+.view.rv-mode-page, .view.rv-mode-slide { touch-action: pan-y; }
+
+/* ------------------------------------------------------------------ */
+/* 5b. 真·横向分页（整页翻页 / 滑动翻页）                               */
+/*     .rv-pager 一屏取景框；.rv-pages 是 CSS 多列容器：列宽 = 一屏宽，  */
+/*     column-gap: 0 + 固定高度 —— 排不下就往右溢出成新的一列，          */
+/*     页数 = scrollWidth ÷ 列宽。翻页 = translateX(-页号 × 列宽)，      */
+/*     动画由两层 .rv-pager 完成（覆盖式 / 平移式）。                    */
+/* ------------------------------------------------------------------ */
+.view.rv-noscroll { position: relative; overflow: hidden; }
+.rv-paged { position: absolute; inset: 0; overflow: hidden; }
+
+.rv-pager {
+  position: absolute; top: 0; bottom: 0;
+  left: var(--rv-page-pad-x, 16px);
+  right: var(--rv-page-pad-x, 16px);
+  overflow: hidden;
+  background: var(--bg);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+/* 覆盖式翻页：新页压在旧页上滑进来，带阴影和一点卷边感 */
+.rv-cover-left { box-shadow: -18px 0 30px rgba(0, 0, 0, .30); }
+.rv-cover-right { box-shadow: 18px 0 30px rgba(0, 0, 0, .30); }
+.rv-cover-left::after, .rv-cover-right::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 22px; pointer-events: none;
+}
+.rv-cover-left::after { left: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .18), rgba(0, 0, 0, 0)); }
+.rv-cover-right::after { right: 0; background: linear-gradient(270deg, rgba(0, 0, 0, .18), rgba(0, 0, 0, 0)); }
+
+/* 柔和叠化：旧页淡出并轻微缩小，新页淡入回正；只动 opacity / transform，不碰布局 */
+.rv-pager.rv-fade-out {
+  transition: opacity .29s ease, transform .29s ease;
+  opacity: 0;
+  transform: scale(.98);
+  z-index: 1;
+}
+.rv-pager.rv-fade-next {
+  transition: opacity .29s ease, transform .29s ease;
+  opacity: 0;
+  transform: scale(1.015);
+  z-index: 2;
+}
+.rv-pager.rv-fade-next.rv-fade-run { opacity: 1; transform: none; }
+
+.rv-pages {
+  position: absolute;
+  column-gap: 0;
+  column-fill: auto;
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: var(--fs-read);
+  line-height: var(--lh-read);
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.rv-paged.sans .rv-pages { font-family: var(--font-ui, sans-serif); }
+.rv-pages h2 {
+  margin: 2px 0 10px !important;
+  font-size: 17px;
+  line-height: 1.4;
+  break-after: avoid;
+  break-inside: avoid;
+}
+.rv-pages img { max-width: 100%; border-radius: 10px; break-inside: avoid; }
+.rv-pages .reader-stage { padding: 0; white-space: pre-wrap; }
+.rv-pages .reader-stage h2, .rv-pages .reader-stage h3 { font-family: var(--font-ui); }
+.rv-pages blockquote { break-inside: avoid; }
+
+/* 页码指示：右下角「第 3 / 12 页 · 26%」 */
+.rv-page-ind {
+  position: fixed; right: 14px; z-index: 21;
+  bottom: calc(var(--rv-tabbar-h, 58px) + var(--rv-bottombar-h, 62px) + 6px);
+  padding: 3px 9px; border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-elev) 88%, transparent);
+  color: var(--text-3); font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease, bottom .26s ease;
+}
+.rv-page-ind.rv-on { opacity: 1; transform: none; }
+html.rv-chrome-off .rv-page-ind { bottom: 14px; }
+
+/* ------------------------------------------------------------------ */
+/* 5c. 仿真翻页（卷曲）                                                 */
+/*     手指横拖 → 折痕跟着走：clip-path 把当前页裁在折痕一侧，掀起来的   */
+/*     那一片用 scaleX(-1) 绕折痕镜像到另一侧（露出纸背与透出的墨色），  */
+/*     几条渐变做明暗：折痕内侧压暗、卷面背光变暗 + 内侧高光、下一页投影。*/
+/* ------------------------------------------------------------------ */
+.rv-curl-flap {
+  position: absolute; top: 0; bottom: 0;
+  left: var(--rv-page-pad-x, 16px);
+  right: var(--rv-page-pad-x, 16px);
+  overflow: hidden;
+  /* 纸背：比正面略深一点，才看得出「翻过来的是另一面」 */
+  background: color-mix(in srgb, var(--bg) 92%, var(--text) 8%);
+  will-change: clip-path, transform;
+  backface-visibility: hidden;
+}
+.rv-curl-sheet { opacity: .2; filter: saturate(.35); pointer-events: none; }
+.rv-curl-shade, .rv-curl-flat-shade, .rv-curl-under-shade {
+  position: absolute; top: 0; bottom: 0; pointer-events: none;
+}
+/* 掀起的那一片：外缘（自由边）背光压暗，靠折痕的内侧提亮 */
+.rv-curl-shade {
+  background: linear-gradient(90deg,
+    rgba(0, 0, 0, .45) 0%,
+    rgba(0, 0, 0, .18) 22%,
+    rgba(0, 0, 0, .04) 55%,
+    rgba(255, 255, 255, .10) 84%,
+    rgba(255, 255, 255, .40) 100%);
+}
+/* 折痕压在当前页上的暗边 */
+.rv-curl-flat-shade {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, .28));
+}
+/* 掀起来以后，下一页贴着折痕的投影 */
+.rv-curl-under-shade {
+  background: linear-gradient(90deg, rgba(0, 0, 0, .34), rgba(0, 0, 0, 0));
+}
+/* 反向翻（从左边掀）时渐变方向反过来 */
+.rv-paged.rv-curl-rev .rv-curl-shade {
+  background: linear-gradient(270deg,
+    rgba(0, 0, 0, .45) 0%,
+    rgba(0, 0, 0, .18) 22%,
+    rgba(0, 0, 0, .04) 55%,
+    rgba(255, 255, 255, .10) 84%,
+    rgba(255, 255, 255, .40) 100%);
+}
+.rv-paged.rv-curl-rev .rv-curl-flat-shade {
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, .28));
+}
+.rv-paged.rv-curl-rev .rv-curl-under-shade {
+  background: linear-gradient(270deg, rgba(0, 0, 0, .34), rgba(0, 0, 0, 0));
+}
+/* 「推荐」小标 */
+.rv-chip-rec {
+  margin-left: 5px; padding: 0 5px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent); font-size: 9.5px; line-height: 15px;
+}
+
+/* ------------------------------------------------------------------ */
+/* 6. 侧边进度条（细长，带书签刻度）                                    */
+/* ------------------------------------------------------------------ */
+.rv-rail {
+  position: fixed; right: 2px; width: 12px; z-index: 20;
+  top: calc(var(--rv-appbar-h, 56px) + 12px);
+  bottom: calc(var(--rv-tabbar-h, 58px) + var(--rv-bottombar-h, 62px) + 16px);
+  pointer-events: none;
+}
+.rv-rail::before {
+  content: ''; position: absolute; left: 5px; top: 0; bottom: 0; width: 2px;
+  border-radius: 2px; background: color-mix(in srgb, var(--text-3) 24%, transparent);
+}
+.rv-rail-fill {
+  position: absolute; left: 5px; top: 0; width: 2px; height: 0;
+  border-radius: 2px; background: var(--accent);
+  transition: height .25s ease;
+}
+.rv-rail-cursor {
+  position: absolute; left: 2px; width: 8px; height: 8px; margin-top: -4px;
+  border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 0 2px var(--bg);
+  transition: top .25s ease;
+}
+.rv-rail-ticks { position: absolute; inset: 0; }
+.rv-rail-tick {
+  position: absolute; left: 0; width: 12px; height: 12px; margin-top: -6px;
+  padding: 0; border: 0; background: none; pointer-events: auto;
+}
+.rv-rail-tick::after {
+  content: ''; display: block; width: 7px; height: 7px; margin: 2px auto;
+  border-radius: 2px; background: var(--rv-mark);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* ------------------------------------------------------------------ */
+/* 7. 书签在正文 / 目录里的标记                                        */
+/* ------------------------------------------------------------------ */
+.rv-stage h2.rv-has-mark, .rv-pages h2.rv-has-mark { position: relative; }
+.rv-ribbon {
+  position: absolute; left: -11px; top: 3px; bottom: 3px; width: 3px;
+  border-radius: 2px; background: var(--rv-mark);
+}
+.reader-stage p.rv-mark-para, .reader-stage blockquote.rv-mark-para, .reader-stage li.rv-mark-para { position: relative; }
+.reader-stage p.rv-mark-para::before,
+.reader-stage blockquote.rv-mark-para::before,
+.reader-stage li.rv-mark-para::before {
+  content: ''; position: absolute; left: -11px; top: .3em; bottom: .3em; width: 3px;
+  border-radius: 2px; background: var(--rv-mark); opacity: .85;
+}
+
+.toc-item.rv-toc-marked { background: color-mix(in srgb, var(--rv-mark) 7%, transparent); }
+.toc-item.rv-toc-marked .row-title { color: var(--text); }
+.rv-toc-mark { color: var(--rv-mark); flex: 0 0 auto; display: inline-flex; align-items: center; }
+.toc-item.active.rv-toc-marked { background: var(--accent-soft); }
+.toc-item.active.rv-toc-marked .row-title { color: var(--accent); font-weight: 620; }

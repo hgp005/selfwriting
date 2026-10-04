@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="selfwriting：写作图标">
+  <title>selfwriting</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d4765f"/>
+      <stop offset="0.55" stop-color="#bc5439"/>
+      <stop offset="1" stop-color="#943826"/>
+    </linearGradient>
+    <linearGradient id="pen" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f7e6dd"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- 纸上的书写线 -->
+  <path d="M120 404 H392" stroke="url(#pen)" stroke-width="28" stroke-linecap="round" fill="none"/>
+
+  <!-- 笔杆 -->
+  <path d="M356 124 L438 206" stroke="url(#pen)" stroke-width="46" stroke-linecap="round" fill="none"/>
+
+  <!-- 笔握：由粗收细 -->
+  <path d="M366 196 L300 300" stroke="url(#pen)" stroke-width="38" stroke-linecap="round" fill="none"/>
+
+  <!-- 笔尖：明显的尖头，落在书写线上 -->
+  <path d="M286 322 L256 382 L340 348 Z" fill="url(#pen)"/>
+</svg>

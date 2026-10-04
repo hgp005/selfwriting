@@ -1,0 +1,383 @@
+{
+  "name": "selfwriting instrument samples",
+  "source": "MIDI.js Soundfonts · FluidR3_GM (Frank Wen)",
+  "sourceUrl": "https://github.com/gleitz/midi-js-soundfonts",
+  "cdn": "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@gh-pages/FluidR3_GM/",
+  "licence": "CC BY 3.0 (FluidR3_GM 采样) + MIT (该仓库脚本/清单)",
+  "licenceFile": "assets/samples/LICENSE.md",
+  "generatedAt": "2026-09-24T14:35:46.637Z",
+  "instrument": {
+    "piano": {
+      "gm": "acoustic_grand_piano",
+      "label": "钢琴",
+      "from": 48,
+      "to": 90,
+      "step": 3,
+      "files": [
+        {
+          "midi": 48,
+          "note": "C3",
+          "file": "assets/samples/piano/C3.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 51,
+          "note": "Eb3",
+          "file": "assets/samples/piano/Eb3.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 54,
+          "note": "Gb3",
+          "file": "assets/samples/piano/Gb3.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 57,
+          "note": "A3",
+          "file": "assets/samples/piano/A3.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 60,
+          "note": "C4",
+          "file": "assets/samples/piano/C4.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 63,
+          "note": "Eb4",
+          "file": "assets/samples/piano/Eb4.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 66,
+          "note": "Gb4",
+          "file": "assets/samples/piano/Gb4.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 69,
+          "note": "A4",
+          "file": "assets/samples/piano/A4.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 72,
+          "note": "C5",
+          "file": "assets/samples/piano/C5.mp3",
+          "bytes": 25585,
+          "cached": true
+        },
+        {
+          "midi": 75,
+          "note": "Eb5",
+          "file": "assets/samples/piano/Eb5.mp3",
+          "bytes": 24753,
+          "cached": true
+        },
+        {
+          "midi": 78,
+          "note": "Gb5",
+          "file": "assets/samples/piano/Gb5.mp3",
+          "bytes": 24493,
+          "cached": true
+        },
+        {
+          "midi": 81,
+          "note": "A5",
+          "file": "assets/samples/piano/A5.mp3",
+          "bytes": 18929,
+          "cached": true
+        },
+        {
+          "midi": 84,
+          "note": "C6",
+          "file": "assets/samples/piano/C6.mp3",
+          "bytes": 19371,
+          "cached": true
+        },
+        {
+          "midi": 87,
+          "note": "Eb6",
+          "file": "assets/samples/piano/Eb6.mp3",
+          "bytes": 17915,
+          "cached": true
+        },
+        {
+          "midi": 90,
+          "note": "Gb6",
+          "file": "assets/samples/piano/Gb6.mp3",
+          "bytes": 17239,
+          "cached": true
+        }
+      ]
+    },
+    "epiano": {
+      "gm": "electric_piano_1",
+      "label": "电钢琴",
+      "from": 48,
+      "to": 87,
+      "step": 3,
+      "files": [
+        {
+          "midi": 48,
+          "note": "C3",
+          "file": "assets/samples/epiano/C3.mp3",
+          "bytes": 20437,
+          "cached": true
+        },
+        {
+          "midi": 51,
+          "note": "Eb3",
+          "file": "assets/samples/epiano/Eb3.mp3",
+          "bytes": 20333,
+          "cached": true
+        },
+        {
+          "midi": 54,
+          "note": "Gb3",
+          "file": "assets/samples/epiano/Gb3.mp3",
+          "bytes": 21893,
+          "cached": true
+        },
+        {
+          "midi": 57,
+          "note": "A3",
+          "file": "assets/samples/epiano/A3.mp3",
+          "bytes": 23765,
+          "cached": true
+        },
+        {
+          "midi": 60,
+          "note": "C4",
+          "file": "assets/samples/epiano/C4.mp3",
+          "bytes": 19553,
+          "cached": true
+        },
+        {
+          "midi": 63,
+          "note": "Eb4",
+          "file": "assets/samples/epiano/Eb4.mp3",
+          "bytes": 20385,
+          "cached": true
+        },
+        {
+          "midi": 66,
+          "note": "Gb4",
+          "file": "assets/samples/epiano/Gb4.mp3",
+          "bytes": 17083,
+          "cached": true
+        },
+        {
+          "midi": 69,
+          "note": "A4",
+          "file": "assets/samples/epiano/A4.mp3",
+          "bytes": 18539,
+          "cached": true
+        },
+        {
+          "midi": 72,
+          "note": "C5",
+          "file": "assets/samples/epiano/C5.mp3",
+          "bytes": 19761,
+          "cached": true
+        },
+        {
+          "midi": 75,
+          "note": "Eb5",
+          "file": "assets/samples/epiano/Eb5.mp3",
+          "bytes": 19943,
+          "cached": true
+        },
+        {
+          "midi": 78,
+          "note": "Gb5",
+          "file": "assets/samples/epiano/Gb5.mp3",
+          "bytes": 19605,
+          "cached": true
+        },
+        {
+          "midi": 81,
+          "note": "A5",
+          "file": "assets/samples/epiano/A5.mp3",
+          "bytes": 17421,
+          "cached": true
+        },
+        {
+          "midi": 84,
+          "note": "C6",
+          "file": "assets/samples/epiano/C6.mp3",
+          "bytes": 17837,
+          "cached": true
+        },
+        {
+          "midi": 87,
+          "note": "Eb6",
+          "file": "assets/samples/epiano/Eb6.mp3",
+          "bytes": 17343,
+          "cached": true
+        }
+      ]
+    },
+    "guitar": {
+      "gm": "acoustic_guitar_steel",
+      "label": "吉他",
+      "from": 40,
+      "to": 70,
+      "step": 3,
+      "files": [
+        {
+          "midi": 40,
+          "note": "E2",
+          "file": "assets/samples/guitar/E2.mp3",
+          "bytes": 17057,
+          "cached": true
+        },
+        {
+          "midi": 43,
+          "note": "G2",
+          "file": "assets/samples/guitar/G2.mp3",
+          "bytes": 17135,
+          "cached": true
+        },
+        {
+          "midi": 46,
+          "note": "Bb2",
+          "file": "assets/samples/guitar/Bb2.mp3",
+          "bytes": 17837,
+          "cached": true
+        },
+        {
+          "midi": 49,
+          "note": "Db3",
+          "file": "assets/samples/guitar/Db3.mp3",
+          "bytes": 19501,
+          "cached": true
+        },
+        {
+          "midi": 52,
+          "note": "E3",
+          "file": "assets/samples/guitar/E3.mp3",
+          "bytes": 19241,
+          "cached": true
+        },
+        {
+          "midi": 55,
+          "note": "G3",
+          "file": "assets/samples/guitar/G3.mp3",
+          "bytes": 19553,
+          "cached": true
+        },
+        {
+          "midi": 58,
+          "note": "Bb3",
+          "file": "assets/samples/guitar/Bb3.mp3",
+          "bytes": 19007,
+          "cached": true
+        },
+        {
+          "midi": 61,
+          "note": "Db4",
+          "file": "assets/samples/guitar/Db4.mp3",
+          "bytes": 19371,
+          "cached": true
+        },
+        {
+          "midi": 64,
+          "note": "E4",
+          "file": "assets/samples/guitar/E4.mp3",
+          "bytes": 21321,
+          "cached": true
+        },
+        {
+          "midi": 67,
+          "note": "G4",
+          "file": "assets/samples/guitar/G4.mp3",
+          "bytes": 21763,
+          "cached": true
+        },
+        {
+          "midi": 70,
+          "note": "Bb4",
+          "file": "assets/samples/guitar/Bb4.mp3",
+          "bytes": 17499,
+          "cached": true
+        }
+      ]
+    },
+    "bass": {
+      "gm": "electric_bass_finger",
+      "label": "贝斯",
+      "from": 28,
+      "to": 49,
+      "step": 3,
+      "files": [
+        {
+          "midi": 28,
+          "note": "E1",
+          "file": "assets/samples/bass/E1.mp3",
+          "bytes": 14275,
+          "cached": true
+        },
+        {
+          "midi": 31,
+          "note": "G1",
+          "file": "assets/samples/bass/G1.mp3",
+          "bytes": 15393,
+          "cached": true
+        },
+        {
+          "midi": 34,
+          "note": "Bb1",
+          "file": "assets/samples/bass/Bb1.mp3",
+          "bytes": 15211,
+          "cached": true
+        },
+        {
+          "midi": 37,
+          "note": "Db2",
+          "file": "assets/samples/bass/Db2.mp3",
+          "bytes": 15913,
+          "cached": true
+        },
+        {
+          "midi": 40,
+          "note": "E2",
+          "file": "assets/samples/bass/E2.mp3",
+          "bytes": 16095,
+          "cached": true
+        },
+        {
+          "midi": 43,
+          "note": "G2",
+          "file": "assets/samples/bass/G2.mp3",
+          "bytes": 16849,
+          "cached": true
+        },
+        {
+          "midi": 46,
+          "note": "Bb2",
+          "file": "assets/samples/bass/Bb2.mp3",
+          "bytes": 17551,
+          "cached": true
+        },
+        {
+          "midi": 49,
+          "note": "Db3",
+          "file": "assets/samples/bass/Db3.mp3",
+          "bytes": 16069,
+          "cached": true
+        }
+      ]
+    }
+  }
+}

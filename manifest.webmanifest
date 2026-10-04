@@ -1,0 +1,26 @@
+{
+  "name": "selfwriting · 离线创作",
+  "short_name": "selfwriting",
+  "description": "安卓离线创作应用：小说、文章、日记、大纲、阅读器、游戏、音乐、计算器、成就与统计。全部数据保存在本机，无需联网。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait-primary",
+  "background_color": "#f6f6f4",
+  "theme_color": "#f6f6f4",
+  "categories": ["productivity", "books", "lifestyle"],
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "256x256", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "写小说", "short_name": "小说", "url": "./index.html#/library" },
+    { "name": "写日记", "short_name": "日记", "url": "./index.html#/diary" },
+    { "name": "看大纲", "short_name": "大纲", "url": "./index.html#/outline" }
+  ]
+}

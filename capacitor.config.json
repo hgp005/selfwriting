@@ -1,0 +1,30 @@
+{
+  "name": "selfwriting",
+  "version": "1.2.0",
+  "description": "selfwriting · 离线创作（小说 / 文章 / 日记 / 大纲 / 阅读器 / 成就 / 统计）",
+  "private": true,
+  "appId": "com.selfwriting.app",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#f6f6f4"
+  },
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#f6f6f4",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_CROP"
+    },
+    "StatusBar": {
+      "style": "DEFAULT",
+      "backgroundColor": "#f6f6f4"
+    }
+  }
+}
